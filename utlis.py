@@ -32,4 +32,5 @@ def getContours(img, cThr=[100, 100], showCanny=False, minArea=1000, filter=0, d
         for con in contours:
             cv2.drawContours(img, con[4], -1, (0,0,255), 3)
 
+
     return img,finalContours
