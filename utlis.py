@@ -16,21 +16,42 @@ def getContours(img, cThr=[100, 100], showCanny=False, minArea=1000, filter=0, d
     finalContours =  []
     for i in contours:
         area =cv2.contourArea(i)
+        #print("Contour Area = ", area)
         if area>minArea:
+            print("Inside if area>minArea")
             peri = cv2.arcLength(i, True)
             approx = cv2.approxPolyDP(i,  0.02*peri, True)
             bbox = cv2.boundingRect(approx)
 
             # if filter>0:
             #     if len(approx)==filter:
-            #         finalContours.append(len(approx), area, approx,bbox, i)
+            #         finalContours.append([len(approx), area, approx,bbox, i])
+            #         print("finalContours If", finalContours)
             # else:
-            #     finalContours.append(len(approx), area, approx,bbox, i)
+            #     finalContours.append([len(approx), area, approx,bbox, i])
+            #     print("finalContours Else", finalContours)
+            finalContours.append([len(approx), area, approx, bbox, i])
 
     finalContours = sorted(finalContours, key= lambda x:x[1], reverse=True)
     if draw:
-        for con in contours:
+        for con in finalContours:
             cv2.drawContours(img, con[4], -1, (0,0,255), 3)
 
 
     return img,finalContours
+
+def reorder(myPoints):
+    print(myPoints.shape)
+    myPointsNew = np.zeros_like(myPoints)
+    myPoints=myPoints.reshape((9,2))
+    add = myPoints.sum(1)
+    myPointsNew[0] = myPoints[np.argmin(add)]
+    myPoints[3] = myPoints[np.argmax(add)]
+    diff = np.diff(myPoints, axis=1)
+    myPointsNew[1] = myPoints[np.argmin(diff)]
+    myPointsNew[2] = myPoints[np.argmax(diff)]
+    return myPointsNew
+
+def warpImg(img, points, w,h):
+    print(points)
+    print(reorder(points))

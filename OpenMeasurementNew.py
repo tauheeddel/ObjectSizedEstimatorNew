@@ -13,7 +13,13 @@ while True:
     if webcam: success, img = cap.read()
     else: img = cv2.imread(path)
 
-    img, finalContours = utlis.getContours(img, showCanny=True, draw=True)
+    img, conts = utlis.getContours(img, showCanny=True, minArea=50000, filter=4)
+    print(len(conts))
+    if(len(conts)!=0):
+        biggest = conts[0][2]
+        #print(biggest)
+        utlis.warpImg(img, biggest, 100, 100)
+
 
     img = cv2.resize(img, (0,0), None, 0.5, 0.5)
     cv2.imshow('Original', img)
