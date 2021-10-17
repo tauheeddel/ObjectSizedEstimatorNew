@@ -21,11 +21,11 @@ def getContours(img, cThr=[100, 100], showCanny=False, minArea=1000, filter=0, d
             approx = cv2.approxPolyDP(i,  0.02*peri, True)
             bbox = cv2.boundingRect(approx)
 
-            if filter>0:
-                if len(approx)==filter:
-                    finalContours.append(len(approx), area, approx,bbox, i)
-            else:
-                finalContours.append(len(approx), area, approx,bbox, i)
+            # if filter>0:
+            #     if len(approx)==filter:
+            #         finalContours.append(len(approx), area, approx,bbox, i)
+            # else:
+            #     finalContours.append(len(approx), area, approx,bbox, i)
 
     finalContours = sorted(finalContours, key= lambda x:x[1], reverse=True)
     if draw:
